@@ -50,6 +50,9 @@ class Article
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'article', cascade: ['remove'])]
     private Collection $comments;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    private ?User $author = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -266,6 +269,25 @@ class Article
                 $comment->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User|null $author
+     * @return $this
+     */
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

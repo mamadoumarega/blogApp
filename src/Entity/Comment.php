@@ -28,6 +28,9 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?Article $article = null;
 
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    private ?User $author = null;
+
     /**
      * @return int|null
      */
@@ -108,6 +111,25 @@ class Comment
     public function setArticle(?Article $article): static
     {
         $this->article = $article;
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User|null $author
+     * @return $this
+     */
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
 
         return $this;
     }

@@ -33,6 +33,15 @@ class Article
     #[ORM\Column]
     private ?bool $isPublished = false;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\Column(nullable: true, options: ['default' => 0])]
+    private ?int $views = 0;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $lastUpdated = null;
+
     /**
      * @return int|null
      */
@@ -151,6 +160,61 @@ class Article
     public function setIsPublished(?bool $isPublished): static
     {
         $this->isPublished = $isPublished;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     * @return $this
+     */
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getViews(): ?int
+    {
+        return $this->views;
+    }
+
+    /**
+     * @param int|null $views
+     * @return void
+     */
+    public function setViews(?int $views): void
+    {
+        $this->views = $views;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getLastUpdated(): ?DateTimeInterface
+    {
+        return $this->lastUpdated;
+    }
+
+    /**
+     * @param DateTimeInterface|null $lastUpdated
+     * @return $this
+     */
+    public function setLastUpdated(?DateTimeInterface $lastUpdated): static
+    {
+        $this->lastUpdated = $lastUpdated;
 
         return $this;
     }

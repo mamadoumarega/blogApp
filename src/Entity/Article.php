@@ -55,7 +55,9 @@ class Article
 
     public function __construct()
     {
-        $this->comments = new ArrayCollection();
+        $this
+            ->setComments(new ArrayCollection())
+        ;
     }
 
     /**
@@ -241,6 +243,17 @@ class Article
     public function getComments(): Collection
     {
         return $this->comments;
+    }
+
+    /**
+     * @param Collection $comments
+     * @return $this
+     */
+    public function setComments(Collection $comments): static
+    {
+        $this->comments = $comments;
+
+        return $this;
     }
 
     /**

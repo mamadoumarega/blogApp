@@ -53,6 +53,10 @@ class Article
     #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $author = null;
 
+    #[ORM\ManyToOne(inversedBy: 'articles')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Category $category = null;
+
     public function __construct()
     {
         $this
@@ -301,6 +305,25 @@ class Article
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     * @return $this
+     */
+    public function setCategory(?Category $category): static
+    {
+        $this->category = $category;
 
         return $this;
     }

@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid shadow-sm p-3 mb-5">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ path('app_home') }}">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Actualités</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Blog</a>
+                </li>
+                {% if app.user.getFirstName() is defined and app.user.getFirstName() is not null %}
+                    <li class="nav-item">
+                        <span class="nav-link">Bonjour, {{ app.user.getFirstName() }} !</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_logout') }}">Deconnexion</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ path('app_login') }}">Connexion</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

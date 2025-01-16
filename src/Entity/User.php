@@ -57,6 +57,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastName = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $reset_password_request = null;
+
     public function __construct()
     {
         $this
@@ -289,6 +292,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastName(string $lastName): static
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getResetPasswordRequest(): ?string
+    {
+        return $this->reset_password_request;
+    }
+
+    /**
+     * @param string|null $reset_password_request
+     * @return $this
+     */
+    public function setResetPasswordRequest(?string $reset_password_request): static
+    {
+        $this->reset_password_request = $reset_password_request;
 
         return $this;
     }

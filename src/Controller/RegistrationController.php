@@ -69,6 +69,13 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
+            $this
+                ->addFlash(
+                    'send_success',
+                    'Vous allez recevoir un mail de confirmation dans votre boite mail, veillez cliquer pour confirmer votre adresse email.'
+                )
+            ;
+
             // generate a signed url and email it to the user
             $this->getEmailVerif()->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
@@ -104,9 +111,8 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre adresse email a bien été verifiée.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_home');
     }
 }

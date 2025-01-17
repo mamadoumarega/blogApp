@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de l'article {{ article.getName() }}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-6 m-auto">
+            <p>{{ article.getName() }}</p>
+            <p>{{ article.getDescription() }}</p>
+            {% for comment in article.getComments() %}
+                <p>{{ comment.getContent() }}</p>
+                <p>{{ comment.getAuthor().getFirstName() }}</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -215,11 +215,13 @@ class Article
 
     /**
      * @param int|null $views
-     * @return void
+     * @return $this
      */
-    public function setViews(?int $views): void
+    public function setViews(?int $views): static
     {
         $this->views = $views;
+
+        return $this;
     }
 
     /**

@@ -2,34 +2,46 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(): Response
+    public function index(ArticleRepository $articleRepository, Request $request): Response
     {
-        return $this->render('home/home.html.twig');
+        $currentPage = $request->query->getInt('page', 1);
+        $limit = 10;
+        $paginator = $articleRepository->findPaginated($currentPage, $limit);
+        $totalArticles = count($paginator);
+
+        return $this->render(
+            'home/home.html.twig',
+            [
+                'articles' => $paginator,
+                'currentPage' => $currentPage,
+                'limit' => $limit,
+                'totalArticles' => $totalArticles,
+            ]
+        );
     }
 
-    #[Route('/test-email', name: 'test_email')]
-    public function testEmail(MailerInterface $mailer): Response
+    #[Route('/article/{id}', name: 'app_article_detail')]
+    public function getArticleDetailAction(ArticleRepository $articleRepository, Request $request): Response
     {
-        $email = (new Email())
-            ->from('example@example.com')
-            ->to('recipient@example.com')
-            ->subject('Test Email')
-            ->text('Ceci est un test depuis Symfony');
-
-        try {
-            $mailer->send($email);
-            return new Response('Email envoyé avec succès');
-        } catch (\Exception $e) {
-            return new Response('Erreur : ' . $e->getMessage());
+        $id = $request->get('id');
+        $article = $articleRepository->find($id);
+        if (!$article) {
+            throw $this->createNotFoundException(
+                sprintf('No article found for id %s', $id)
+            );
         }
+//        $article->setNbViews($article->getNbViews() + 1);
+        return $this->render('home/article_detail.html.twig', [
+            'article' => $article,
+        ]);
     }
 }

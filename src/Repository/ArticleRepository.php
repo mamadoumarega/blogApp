@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Article;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,6 +15,24 @@ class ArticleRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Article::class);
+    }
+
+    /**
+     * @param int $currentPage
+     * @param int $limit
+     * @return Paginator
+     */
+    public function findPaginated(int $currentPage, int $limit = 10)
+    {
+        $query = $this
+            ->createQueryBuilder('a')
+            ->orderBy('a.dateCreated', 'ASC')
+            ->getQuery()
+            ->setFirstResult(($currentPage - 1) * $limit)
+            ->setMaxResults($limit)
+        ;
+
+        return new Paginator($query, true);
     }
 
     //    /**
